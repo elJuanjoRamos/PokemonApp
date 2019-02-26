@@ -8,7 +8,9 @@ package menu;
 import java.util.Random;
 import java.util.Scanner;
 import beans.Pokemon;
+import controller.BatallaController;
 import controller.PokemonController;
+import java.util.HashSet;
 import java.util.InputMismatchException;
 
 /**
@@ -29,6 +31,13 @@ public class Menu {
     int salir = 0;
     int max = 100;
     int min = 50;
+    String playerOption = "";
+    String jugador1 = "";
+    String jugador2 = "";
+    Boolean turno = true;
+    Pokemon[] pokemonJugador1 = new Pokemon[2];
+    Pokemon[] pokemonJugador2 = new Pokemon[2];
+        
     private static Menu instance;
 
 
@@ -46,9 +55,9 @@ public class Menu {
         System.out.format("       |        Pokemon App        |%n");
         System.out.format("       +---------------------------+%n");
         System.out.println(" ");
-        System.out.println("Choose a option to continue:");
-        System.out.println("1.Login");
-        System.out.println("2.Exit");
+        System.out.println("Elige una opcion para continuar:");
+        System.out.println("1.Acceder");
+        System.out.println("2.Salir");
         System.out.println(" ");
         System.out.print("Opcion: ");
         option = scanner.nextInt();
@@ -73,14 +82,14 @@ public class Menu {
 
     
     public void MainMenu() {
-        System.out.format("       +---------------------------+%n");
-        System.out.format("       |         Main Menu         |%n");
-        System.out.format("       +---------------------------+%n");
+        System.out.format("       +--------------------------------+%n");
+        System.out.format("       |         Menu Principal         |%n");
+        System.out.format("       +--------------------------------+%n");
         System.out.println(" ");
         
-        System.out.println("Choose a option to continue:");
-        System.out.println("1.Administrator");
-        System.out.println("2.Battles");
+        System.out.println("Ellige una opcion para continuar:");
+        System.out.println("1.Administrdor");
+        System.out.println("2.Batalla con dos jugadores");
         System.out.print("Opcion: ");
         option = scanner.nextInt();
 
@@ -91,19 +100,25 @@ public class Menu {
                 System.out.format("       |       Welcome Admin      |%n");
                 System.out.format("       +--------------------------+%n");
                 System.out.println(" ");
-                //System.out.print("Password: ");
-                //int password = scanner.nextInt();
-                AdminMenu();
-                /*if (password == 201801262) {
-                    
-                } else {
+                System.out.print("Password: ");
+                scanner.nextLine();
+                
+                try {
+                    String password = scanner.nextLine();
+                    if (Integer.parseInt(eliminarEspacios(password)) == 201801262) {
+                        AdminMenu();
+
+                    } else {
+                        setTimeout( "El Password no es correcto" , 2500 );
+                        MainMenu();
+                    }
+                } catch(NumberFormatException e ) {
                     setTimeout( "El Password no es correcto" , 2500 );
                     MainMenu();
-                }*/
-
+                }
                 break; 
             case 2:
-                PlayerMenu();
+                MenuJugador();
                 break;
             default:
                 MainMenu();
@@ -117,12 +132,12 @@ public class Menu {
         
 
         
-            System.out.println("Choose a option to continue:");
-            System.out.println("1.Pokemon added");
-            System.out.println("2.Add a new Pokemon");
-            System.out.println("3.Edit Pokemon");
-            System.out.println("4.Report");
-            System.out.println("5.Main Menu");;
+            System.out.println("Elige una opcion para continuar:");
+            System.out.println("1.Pokemon agregados");
+            System.out.println("2.Agregar Pokemon");
+            System.out.println("3.Editar Pokemon");
+            System.out.println("4.Reportes");
+            System.out.println("5.Menu Principal");;
             System.out.println(" ");
             System.out.print("Option: ");
             
@@ -130,7 +145,7 @@ public class Menu {
                 
             switch ( option ) {
                 case 1:
-                    PokemonController.getInstance().DisplayPokemons();
+                    PokemonController.getInstancia().MostrarPokemon();
                     AdminMenu(); 
                     break;
                 case 2:
@@ -140,28 +155,28 @@ public class Menu {
                     System.out.println(" ");
                     do {
                     
-                        System.out.print("Insert a Name: ");
+                        System.out.print("Ingrese un nombre: ");
                         scanner.nextLine();
                         String pokemonName = scanner.nextLine();
-                        System.out.print("Insert a Image: " );
+                        System.out.print("Ingrese una Imagen: " );
                         String pokemonImg = scanner.nextLine();
 
                         int attack = rand.nextInt(20);
-                        attack += 1;
+                        attack += 5;
 
                         int healt = rand.nextInt(max - min) + min;
 
-                        PokemonController.getInstance().AddPokemon(pokemonName, pokemonImg, healt, attack);
+                        PokemonController.getInstancia().AgregarPokemon(pokemonName, pokemonImg, healt, attack);
                         System.out.println("");
-                        System.out.println("Pokemon successfully added!!");
+                        System.out.println("Pokemon Agregado Correctamente!!");
                         System.out.println("");
                         
                         
-                        System.out.println("Do you want to add another pokemon?");
-                        System.out.println("1.Yes");
+                        System.out.println("Desea agregar otro pokemon?");
+                        System.out.println("1.Si");
                         System.out.println("2.No");
                         System.out.println("");
-                        System.out.print("Option: ");
+                        System.out.print("Opcion: ");
                         
                         option = scanner.nextInt();
                         
@@ -177,12 +192,12 @@ public class Menu {
                     System.out.println("           +--------------------------+");
                     System.out.println(" ");
                     System.out.println(" ");
-                    PokemonController.getInstance().DisplayPokemons2();
-                    System.out.println("Elije el ID del pokemon que desea editar");
+                    PokemonController.getInstancia().MostrarPokemon();
+                    System.out.println("Elije el ID o el nombre del pokemon que desea editar");
                     try {
-                        System.out.print("ID: ");
+                        System.out.print("Pokemon: ");
                         int id = scanner.nextInt();
-                        PokemonController.getInstance().FindPokemon(id);
+                        //PokemonController.getInstancia().BuscarPokemon(eliminarEspacios(id));
                         
                         try {
                             
@@ -211,11 +226,141 @@ public class Menu {
 
     }
 
-    public void PlayerMenu() {
-        System.out.println("Hola player");
+    
+    public void MenuJugador() {
+        
+        System.out.println(" ");
+        System.out.println(" ");
+        System.out.println(" ");
+        System.out.println("           +--------------------------+");
+        System.out.println("           |      Batalla Pokemon     |");
+        System.out.println("           +--------------------------+");
+        System.out.println(" ");
+        System.out.println(" ");
+        System.out.println("1. Jugar");
+        System.out.println("2. Regresar al menu principal");
+        System.out.print("Elija una opcion: ");
+        scanner.nextLine();
+            
+        try {
+            playerOption = scanner.nextLine();
+            
+        
+            switch( Integer.parseInt(eliminarEspacios(playerOption)) ){
+                case 1:
+                    System.out.println(" ");
+
+                    System.out.print("Por favor ingrese el nombre del jugador 1: ");
+                    jugador1 = scanner.nextLine();
+                    System.out.println(" ");
+                    
+                    System.out.print("Por favor ingrese el nombre del jugador 2: ");
+                    jugador2 = scanner.nextLine();
+                    
+                    System.out.println(" ");
+                    System.out.println(" ");
+                    System.out.println(" ");
+                    System.out.println("           +--------------------------+");
+                    System.out.println("           |     Pokemon Permitidos   |");
+                    System.out.println("           +--------------------------+");
+        
+                    PokemonController.getInstancia().MostrarPokemon();
+                    System.out.println(" ");
+                    System.out.println(" ");
+                    try {                    
+                        
+                        
+                        while( true ) {
+                    
+                            System.out.print("Por favor," + jugador1 + ", elija el Id del pokemon que desea utilizar: ");
+                            playerOption= scanner.nextLine();
+                            pokemonJugador1[0] = PokemonController.getInstancia().BuscarPokemon(Integer.parseInt(eliminarEspacios(playerOption)));
+                        
+                            if(pokemonJugador1[0] != null) {
+                                System.out.println(" ");
+                                System.out.println(" ");
+
+                                while( true ) {
+                                    System.out.print("Elija el segundo Pokemon: ");
+                                    playerOption= scanner.nextLine();
+                                    pokemonJugador1[1] = PokemonController.getInstancia().BuscarPokemon(Integer.parseInt(eliminarEspacios(playerOption)));
+                                    if (pokemonJugador1[1] != null) {
+                                        System.out.println(" ");
+                                        System.out.println(" ");
+                                        while( true ) {
+                                            System.out.print("Por favor," + jugador2 + ", elija el Id del pokemon que desea utilizar: ");
+                                            playerOption= scanner.nextLine();
+                                            pokemonJugador2[0] = PokemonController.getInstancia().BuscarPokemon(Integer.parseInt(eliminarEspacios(playerOption)));
+                                            if( pokemonJugador2[0] != null ) {
+                                                while( true ) {
+                                                    System.out.print("Elija el segundo Pokemon: ");
+                                                    playerOption= scanner.nextLine();
+                                                    pokemonJugador2[1] = PokemonController.getInstancia().BuscarPokemon(Integer.parseInt(eliminarEspacios(playerOption)));
+
+                                                    if( pokemonJugador2[1] != null ) {
+                                                        
+                                                        BatallaController.getInstancia().GenerarBatalla(pokemonJugador1, pokemonJugador2, jugador1, jugador2);
+                                                        break;
+                                                    } else {
+                                                        System.out.println(" ");
+                                                        System.out.println(" ");
+                                                        System.out.println("No se encuentran coincidencias, por favor introduzca un numero valido");
+
+                                                    }
+                                                }
+                                            } else {
+                                                System.out.println(" ");
+                                                System.out.println(" ");
+                                                System.out.println("No se encuentran coincidencias, por favor introduzca un numero valido");
+
+                                            }
+                                        }
+                                        
+                                    } else {
+                                        System.out.println(" ");
+                                        System.out.println(" ");
+                                        System.out.println("No se encuentran coincidencias, por favor introduzca un numero valido");
+                            
+                                    }
+                                }
+
+                            } else {
+                                System.out.println("No se encuentran coincidencias, por favor introduzca un numero valido");
+                                
+                            }
+                        }              
+                        
+                        
+                    } catch(NumberFormatException e) {
+                        setTimeout("Solo se pueden introducir IDs para seleccionar un pokemon", 2500);
+                        MainMenu();
+                    }
+
+                    
+                    
+                    
+                    break;
+                case 2: 
+                    MainMenu();
+                    break;
+                default:
+                    System.out.println(" ");
+                    System.out.println(" ");
+                    System.out.println("Por favor elija una opcion valida");
+                    System.out.println(" ");
+                    System.out.println(" ");
+                    MainMenu();
+                    break;
+            }
+                   
+
+        } catch(NumberFormatException e) {
+                    setTimeout( "Solo se puede ingresar numeros" , 2500 );
+                    MainMenu();
+        }
+        
     }
-
-
+    
     public String eliminarEspacios(String texto) {
         String nuevoTexto = "";
         for (int x = 0; x < texto.length(); x++) {
@@ -229,9 +374,7 @@ public class Menu {
     public static void setTimeout(String texto, int delay ) {
             try {
 
-                System.out.format("       +----------------------------+%n");
                 System.out.format("          " + texto +"     %n");
-                System.out.format("       +----------------------------+%n");
                 System.out.println(" ");
                 System.out.println(" ");
                 System.out.println(" ");

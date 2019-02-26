@@ -12,40 +12,44 @@ package beans;
 public class Pokemon {
 
     private Integer id;
-    private String name;
+    private String nombre;
     private String img;
-    private Boolean state;
-    private Integer healthPoint;
-    private Integer attackPoint;
+    private Boolean estado;
+    private Integer puntosVida;
+    private Integer puntosAtaque;
 
     // constructor
-    public Pokemon(Integer id, String name, String img, Integer healthPoint, Integer attackPoint) {
+    public Pokemon(Integer id, String nombre, String img, Integer puntosVida, Integer puntosAtaque) {
         this.id = id;
-        this.name = name;
+        this.nombre = nombre;
         this.img = img;
-        this.state = true;
-        this.healthPoint = healthPoint;
-        this.attackPoint = attackPoint;
+        this.estado = true;
+        this.puntosVida = puntosVida;
+        this.puntosAtaque = puntosAtaque;
+    }
+    
+    public Pokemon(){
+        
     }
 
     // Getter methods
     public Integer getId() {
         return this.id;
     }
-    public String getName() {
-        return this.name;
+    public String getNombre() {
+        return this.nombre;
     }
     public String getImg() {
         return this.img;
     }
-    public Boolean getState() {
-        return this.state;
+    public Boolean getEstado() {
+        return this.estado;
     }
-    public Integer getHealthPoint() {
-        return this.healthPoint;
+    public Integer getPuntosVida() {
+        return this.puntosVida;
     }
-    public Integer getAttackPoint() {
-        return this.attackPoint;
+    public Integer getPuntosAtaque() {
+        return this.puntosAtaque;
     }
 
     // Setter methods
@@ -58,18 +62,18 @@ public class Pokemon {
     */
 
     
-    public void setName(String name) {
-        this.name = name;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
     
-    public void setState(Boolean state) {
-        this.state = state;
+    public void setEstado(Boolean estado) {
+        this.estado = estado;
     }
-    public void setHealthPoint(Integer healthPoint) {
-        this.healthPoint = healthPoint;
+    public void setPuntosVida(Integer puntosVida) {
+        this.puntosVida = puntosVida;
     }
-    public void setAttackPoint(Integer attackPoint) {
-        this.attackPoint = attackPoint;
+    public void setPuntosAtaque(Integer puntosAtaque) {
+        this.puntosAtaque = puntosAtaque;
     }
 
 }
