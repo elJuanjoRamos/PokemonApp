@@ -26,11 +26,13 @@ public class Batalla {
     private int golpesPokemon4;
     private int ataquesPokemon3;
     private int ataquesPokemon4;
-    
+    private int turnoJugador1;
+    private int turnoJugador2;
     //Constructor
     public Batalla(int id, String jugador1, String jugador2, Pokemon[] pokemonJugador1, Pokemon[] pokemonJugador2, String ganador, int cantidadGolpesPokemon1, 
+            
             int cantidadGolpesPokemon2, int ataquesRecibidosPokemon1, int ataquesRecibidosPokemon2, int cantidadGolpesPokemon3, int cantidadGolpesPokemon4,
-            int ataquesRecibidosPokemon3, int ataquesRecibidosPokemon4){
+            int ataquesRecibidosPokemon3, int ataquesRecibidosPokemon4, int turnoJugador1, int turnoJugador2){
         this.idBatalla = id;
         this.jugador1 = jugador1;
         this.jugador2 = jugador2;
@@ -45,6 +47,8 @@ public class Batalla {
         this.ataquesPokemon2 = ataquesRecibidosPokemon2;
         this.ataquesPokemon3 = ataquesRecibidosPokemon3;
         this.ataquesPokemon4 = ataquesRecibidosPokemon4;
+        this.turnoJugador1 = turnoJugador1;
+        this.turnoJugador2 =  turnoJugador2;
     }
     
     //Getters
@@ -81,19 +85,25 @@ public class Batalla {
         return this.golpesPokemon4;
     }
     
-    public int getAtauesPokemon1() {
+    public int getAtaquesPokemon1() {
         return this.ataquesPokemon1;
     }
-    public int getAtauesPokemon2() {
+    public int getAtaquesPokemon2() {
         return this.ataquesPokemon2;
     }
-    public int getAtauesPokemon3() {
+    public int getAtaquesPokemon3() {
         return this.ataquesPokemon3;
     }
-    public int getAtauesPokemon4() {
+    public int getAtaquesPokemon4() {
         return this.ataquesPokemon4;
     }
     
+    public int getTurnoJugador1(){
+        return this.turnoJugador1;
+    }
+    public int getTurnoJugador2(){
+        return this.turnoJugador2;
+    }
     //Setters
     public void setId(int id) {
          this.idBatalla = id;
@@ -139,5 +149,12 @@ public class Batalla {
     }
     public void setAtaquesPokemon4( int ataques ) {
         this.ataquesPokemon4 = ataques;
+    }
+    
+    public void setTurnoJugador1( int turno ) {
+        this.turnoJugador1 = turno;
+    }
+    public void setTurnoJugador2( int turno ) {
+        this.turnoJugador2 = turno;
     }
 }
